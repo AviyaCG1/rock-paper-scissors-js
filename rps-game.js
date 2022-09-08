@@ -17,16 +17,22 @@ function getComputerChoice(){
 function whoWon(playerChoice, computerChoice){
     // Check if its tie
     if (playerChoice == computerChoice){
-        return `It's a tie of ${playerChoice}s!`;
+        return "tie";
     }
     // IF player won RETURN "You Won! {playerChoice} beats {computerChoice}"
     if (playerChoice == "rock" && computerChoice == "scissors" || 
         playerChoice == "paper" && computerChoice == "rock" ||
         playerChoice == "scissors" && computerChoice == "paper"){
-            return `You won! ${playerChoice} beats ${computerChoice}`;
+            return "win";
         }
-    // ELSE "You lose! {computerChoice} beats {playerChoice}"
-    return `You lose! ${computerChoice} beats ${playerChoice}`;
+    // IF "You lose! {computerChoice} beats {playerChoice}"
+    if (computerChoice == "rock" && playerChoice == "scissors" || 
+        computerChoice == "paper" && playerChoice == "rock" ||
+        computerChoice == "scissors" && playerChoice == "paper"){
+            return "lose";
+        }
+    // ELSE the player input was invalid
+    return "invalid input";
 
 }
 
@@ -39,4 +45,38 @@ function playRound(playerChoice, computerChoice){
     return result;
 }
 
+function game(){
+    let playerChoice, computerChoice, isWin;
+    let playerScore = 0;
+    let computerScore = 0;
+
+    for (let index = 0; index < 5; index++) {
+	    playerChoice = prompt("What's your choice - rock, paper or scissors? ");
+	    computerChoice = getComputerChoice();
+        isWin = playRound(playerChoice, computerChoice);
+        switch (isWin) {
+            case "win":
+                playerScore++;
+                console.log(`You won! ${playerChoice} beats ${computerChoice}`);
+                break;
+            case "lose":
+                computerScore++;
+                console.log(`You lose! ${computerChoice} beats ${playerChoice}`);
+                break;
+            case "tie":
+                index--; //if the game tied reduce index
+                console.log(`It's a tie of ${computerChoice}s!`);
+                break;
+            default:
+                console.log(`invalid result: ${isWin}`);
+                break;
+        }
+    }
+
+    if (playerScore > computerScore){
+        console.log(`You won! ${playerScore} : ${computerScore}`);
+    } else {
+        console.log(`Computer won! ${playerScore} : ${computerScore}`);
+    }
+}
 
