@@ -46,12 +46,12 @@ function playRound(e){
     switch (isWin) {
         case "win":
             playerScore++;
-            playerScoreboard.innerText = playerScore;
+            playerScoreboard.innerText = `You: ${playerScore}`;
             resultOutput.innerText = `You won! ${playerChoice} beats ${computerChoice}`;
             break;
         case "lose":
             computerScore++;
-            computerScoreboard.innerText = computerScore;
+            computerScoreboard.innerText = `Computer: ${computerScore}`;
             resultOutput.innerText = `You lose! ${computerChoice} beats ${playerChoice}`;
             break;
         case "tie":
@@ -73,14 +73,20 @@ function playRound(e){
 
 }
 
-function matchResult(){
-    
+function newGame(){
+    playerScore = 0;
+    playerScoreboard.innerText = `You: ${playerScore}`;
+    computerScore = 0;
+    computerScoreboard.innerText = `Computer: ${computerScore}`;
+    resultOutput.innerText = 'Lets play rock-paper-scissors!';
+    buttons.forEach((e) => e.addEventListener('click',playRound));
 }
 
 const buttons = document.querySelectorAll('.choice-button');
-buttons.forEach((e) => e.addEventListener('click',playRound));
+buttons.forEach((btn) => btn.addEventListener('click',playRound));
 
 const resultOutput = document.querySelector(".result");
+resultOutput.innerText = 'Lets play rock-paper-scissors!';
 
 let playerScore = 0;
 let computerScore = 0;
@@ -88,6 +94,9 @@ let computerScore = 0;
 const playerScoreboard = document.querySelector('.player');
 const computerScoreboard = document.querySelector('.computer');
 
-playerScoreboard.innerText = playerScore;
-computerScoreboard.innerText = computerScore;
+playerScoreboard.innerText = `You: ${playerScore}`;
+computerScoreboard.innerText = `Computer: ${computerScore}`;
+
+const playAgainButton = document.querySelector('#play-again-button');
+playAgainButton.addEventListener('click', newGame);
 
