@@ -36,47 +36,58 @@ function whoWon(playerChoice, computerChoice){
 
 }
 
-function playRound(playerChoice, computerChoice){
+function playRound(e){
     // LowerCase playerChoice
-    let lowerPlayerChoice = playerChoice.toLowerCase();
+    let playerChoice = e.target.innerText.toLowerCase();
+    const computerChoice = getComputerChoice();
     // Check who won
-    let result = whoWon(lowerPlayerChoice, computerChoice);
-    // RETURN text
-    return result;
-}
-
-function game(){
-    let playerChoice, computerChoice, isWin;
-    let playerScore = 0;
-    let computerScore = 0;
-
-    for (let index = 0; index < 5; index++) {
-	    playerChoice = prompt("What's your choice - rock, paper or scissors? ");
-	    computerChoice = getComputerChoice();
-        isWin = playRound(playerChoice, computerChoice);
-        switch (isWin) {
-            case "win":
-                playerScore++;
-                console.log(`You won! ${playerChoice} beats ${computerChoice}`);
-                break;
-            case "lose":
-                computerScore++;
-                console.log(`You lose! ${computerChoice} beats ${playerChoice}`);
-                break;
-            case "tie":
-                index--; //if the game tied reduce index
-                console.log(`It's a tie of ${computerChoice}s!`);
-                break;
-            default:
-                console.log(`invalid result: ${isWin}`);
-                break;
+    let isWin = whoWon(playerChoice, computerChoice);
+    // declare winner and update scores
+    switch (isWin) {
+        case "win":
+            playerScore++;
+            playerScoreboard.innerText = playerScore;
+            resultOutput.innerText = `You won! ${playerChoice} beats ${computerChoice}`;
+            break;
+        case "lose":
+            computerScore++;
+            computerScoreboard.innerText = computerScore;
+            resultOutput.innerText = `You lose! ${computerChoice} beats ${playerChoice}`;
+            break;
+        case "tie":
+            resultOutput.innerText = `It's a tie of ${computerChoice}s!`;
+            break;
+        default:
+            resultOutput.innerText = `invalid result: ${isWin}`;
+            break;
+    }
+    // if someone reach 5 points end the game
+    if (playerScore === 5 || computerScore === 5){
+        if (playerScore > computerScore){
+            resultOutput.innerText = `You won! ${playerScore} : ${computerScore}`;
+        } else {
+            resultOutput.innerText = `Computer won! ${playerScore} : ${computerScore}`;
         }
+        buttons.forEach((e) => e.removeEventListener('click',playRound));// disable choice-buttons to stop the game
     }
 
-    if (playerScore > computerScore){
-        console.log(`You won! ${playerScore} : ${computerScore}`);
-    } else {
-        console.log(`Computer won! ${playerScore} : ${computerScore}`);
-    }
 }
+
+function matchResult(){
+    
+}
+
+const buttons = document.querySelectorAll('.choice-button');
+buttons.forEach((e) => e.addEventListener('click',playRound));
+
+const resultOutput = document.querySelector(".result");
+
+let playerScore = 0;
+let computerScore = 0;
+
+const playerScoreboard = document.querySelector('.player');
+const computerScoreboard = document.querySelector('.computer');
+
+playerScoreboard.innerText = playerScore;
+computerScoreboard.innerText = computerScore;
 
